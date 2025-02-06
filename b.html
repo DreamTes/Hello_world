@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳格子游戏</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #gameCanvas {
+            border: 1px solid #000;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 40;
+        const playerSize = 30;
+        let playerX = 0;
+        let playerY = 0;
+
+        function drawGrid() {
+            for (let x = 0; x <= canvas.width; x += gridSize) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+            }
+            for (let y = 0; y <= canvas.height; y += gridSize) {
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+            }
+            ctx.strokeStyle = "#ddd";
+            ctx.stroke();
+        }
+
+        function drawPlayer() {
+            ctx.fillStyle = "#ff0000";
+            ctx.fillRect(playerX * gridSize + (gridSize - playerSize) / 2, playerY * gridSize + (gridSize - playerSize) / 2, playerSize, playerSize);
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function updateGame() {
+            clearCanvas();
+            drawGrid();
+            drawPlayer();
+        }
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (playerY > 0) playerY--;
+                    break;
+                case 'ArrowDown':
+                    if (playerY < canvas.height / gridSize - 1) playerY++;
+                    break;
+                case 'ArrowLeft':
+                    if (playerX > 0) playerX--;
+                    break;
+                case 'ArrowRight':
+                    if (playerX < canvas.width / gridSize - 1) playerX++;
+                    break;
+            }
+            updateGame();
+        });
+
+        updateGame();
+    </script>
+</body>
+</html>
